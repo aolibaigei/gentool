@@ -84,6 +84,122 @@ func genKernelVer() string {
 	return kernelver
 }
 
+func genContainerID() string {
+
+	str := "0123456789abcdefghijklmnopqrstuvwxyz"
+	bytes := []byte(str)
+	containerid := []byte{}
+
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	for i := 0; i < 12; i++ {
+		containerid = append(containerid, bytes[r.Intn(len(bytes))])
+	}
+
+	return string(containerid)
+}
+
+func genImageID() string {
+
+	str := "0123456789abcdefghijklmnopqrstuvwxyz"
+	bytes := []byte(str)
+	imageid := []byte{}
+
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	for i := 0; i < 12; i++ {
+		imageid = append(imageid, bytes[r.Intn(len(bytes))])
+	}
+
+	return string(imageid)
+}
+
+func genContainerImageName() string {
+	imagedir := make(map[int]string)
+	imagedir[0] = "ubuntu"
+	imagedir[1] = "redis"
+	imagedir[2] = "mongo"
+	imagedir[3] = "nginx"
+
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	image := imagedir[r.Intn(len(imagedir))]
+
+	return image
+}
+
+func genImageName() string {
+	imagedir := make(map[int]string)
+	imagedir[0] = "ubuntu:latest"
+	imagedir[1] = "redis:1.4"
+	imagedir[2] = "mongo:2.5.8"
+	imagedir[3] = "nginx:1.15.2"
+
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	image := imagedir[r.Intn(len(imagedir))]
+
+	return image
+}
+
+func genCreateTime() string {
+	timedir := make(map[int]string)
+	timedir[0] = "18 seconds ago"
+	timedir[1] = "2 months ago"
+	timedir[2] = "5 days ago"
+	timedir[3] = "15 days ago"
+
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	time := timedir[r.Intn(len(timedir))]
+
+	return time
+}
+
+func genContainerStatus() string {
+	timedir := make(map[int]string)
+	timedir[0] = "Up 14 seconds"
+	timedir[1] = "Up 5 days"
+
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	time := timedir[r.Intn(len(timedir))]
+
+	return time
+}
+
+func genContainerPort() string {
+	portdir := make(map[int]string)
+	portdir[0] = "80"
+	portdir[1] = "8080"
+	portdir[2] = "8443"
+	portdir[3] = "5432"
+	portdir[4] = "3306"
+	portdir[5] = "11211"
+
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	port := portdir[r.Intn(len(portdir))]
+
+	return port
+}
+
+func genContainerSize() string {
+	sizedir := make(map[int]string)
+	sizedir[0] = "80MB"
+	sizedir[1] = "65.5MB"
+	sizedir[2] = "165.5MB"
+	sizedir[3] = "202MB"
+	sizedir[4] = "104MB"
+	sizedir[5] = "130MB"
+
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	size := sizedir[r.Intn(len(sizedir))]
+
+	return size
+}
+
 // func genHostInfo() string {
 // 	return "test"
 // }
@@ -114,6 +230,6 @@ func main() {
 	// fmt.Println(genHostName())
 	// fmt.Println(genHostArch())
 	// fmt.Println(genOSVer())
-	fmt.Println(genKernelVer())
+	fmt.Println(genContainerSize())
 
 }
