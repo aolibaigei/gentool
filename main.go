@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math/rand"
 	"strings"
@@ -8,6 +9,31 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 )
+
+type Hostinfo struct {
+	ID       int    `json:"id"`
+	Hostname string `json:"hostname"`
+	Ipaddr   string `json:"ipaddr"`
+	Arch     string `json:"arch"`
+	OSs      string `json:"os"`
+}
+
+type Containerinfo struct {
+	Containerid string `json:"cid"`
+	Image       string `json:"image"`
+	Command     string `json:"command"`
+	Created     string `json:"created"`
+	Status      string `json:"status"`
+	Port        string `json:"port"`
+	Name        string `json:"name"`
+}
+
+type Imageinfo struct {
+	Image   string `json:"image"`
+	Imageid string `json:"imageid"`
+	Created string `json:"created"`
+	Size    string `json:"size"`
+}
 
 func genMachineID() string {
 
@@ -19,7 +45,8 @@ func genMachineID() string {
 
 func genIpaddr() string {
 
-	rand.Seed(time.Now().Unix())
+	// rand.Seed(time.Now().Unix())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	ip := fmt.Sprintf("%d.%d.%d.%d", rand.Intn(255), rand.Intn(255), rand.Intn(255), rand.Intn(255))
 
@@ -114,6 +141,21 @@ func genImageID() string {
 	return string(imageid)
 }
 
+func genContainerName() string {
+
+	str := "0123456789abcdefghijklmnopqrstuvwxyz"
+	bytes := []byte(str)
+	imageid := []byte{}
+
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	for i := 0; i < 12; i++ {
+		imageid = append(imageid, bytes[r.Intn(len(bytes))])
+	}
+
+	return string(imageid)
+}
+
 func genContainerImageName() string {
 	imagedir := make(map[int]string)
 	imagedir[0] = "ubuntu"
@@ -160,6 +202,7 @@ func genContainerStatus() string {
 	timedir := make(map[int]string)
 	timedir[0] = "Up 14 seconds"
 	timedir[1] = "Up 5 days"
+	timedir[2] = "Up 10 months"
 
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 
@@ -184,7 +227,7 @@ func genContainerPort() string {
 	return port
 }
 
-func genContainerSize() string {
+func genImageSize() string {
 	sizedir := make(map[int]string)
 	sizedir[0] = "80MB"
 	sizedir[1] = "65.5MB"
@@ -200,30 +243,63 @@ func genContainerSize() string {
 	return size
 }
 
-type Hostinfo struct {
-	id     int
-	host   string
-	ipaddr string
-	arch   string
-	os     string
+func getHost(num int) {
+
+	host := &Hostinfo{}
+
+	for i := 1; i < num+1; i++ {
+		host.ID = i
+		host.Hostname = genHostName()
+		host.Ipaddr = genIpaddr()
+		host.OSs = genOSVer()
+		host.Arch = genHostArch()
+
+		jsons, errs := json.Marshal(host)
+		if errs != nil {
+			fmt.Println(errs.Error())
+		}
+		fmt.Println(string(jsons) + ",")
+
+	}
+
 }
 
-// type Containerinfo struct {
-// 	containerid string
-// 	imag        string
-// 	command     string
-// 	created     string
-// 	status      string
-// 	ports       uint16
-// 	names       string
-// }
+func getContanier(num int) {
+	container := &Containerinfo{}
+	for i := 0; i < num; i++ {
+		container.Containerid = genContainerID()
+		container.Image = genContainerImageName()
+		container.Port = genContainerPort()
+		container.Created = genCreateTime()
+		container.Status = genContainerStatus()
+		container.Name = genContainerName()
+		container.Command = "/bin/bash"
 
-// type Imageinfo struct {
-// 	image   string
-// 	imageid string
-// 	created string
-// 	size    string
-// }
+		jsons, errs := json.Marshal(container)
+		if errs != nil {
+			fmt.Println(errs.Error())
+		}
+		fmt.Println(string(jsons) + ",")
+
+	}
+}
+
+func getImage(num int) {
+	image := &Imageinfo{}
+	for i := 0; i < num; i++ {
+		image.Image = genImageName()
+		image.Imageid = genImageID()
+		image.Created = genCreateTime()
+		image.Size = genImageSize()
+
+		jsons, errs := json.Marshal(image)
+		if errs != nil {
+			fmt.Println(errs.Error())
+		}
+		fmt.Println(string(jsons) + ",")
+
+	}
+}
 
 func main() {
 	// fmt.Println(genMachineID())
@@ -231,6 +307,9 @@ func main() {
 	// fmt.Println(genHostName())
 	// fmt.Println(genHostArch())
 	// fmt.Println(genOSVer())
-	fmt.Println(genContainerSize())
+
+	// getHost(10)
+	// getContanier(10)
+	getImage(4)
 
 }
