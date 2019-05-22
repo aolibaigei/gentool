@@ -200,30 +200,6 @@ func genContainerSize() string {
 	return size
 }
 
-// func genHostInfo() string {
-// 	return "test"
-// }
-
-// func genContainerInfo() string {
-// 	return "test"
-// }
-
-// func genImageIsnfo() string {
-// 	return "test"
-// }
-
-// func genExecEvent() string {
-// 	return "test"
-// }
-
-// func genconninfo() string {
-// 	return "test"
-// }
-
-// func gencveinfo() string {
-// 	return "test"
-// }
-
 func main() {
 	// fmt.Println(genMachineID())
 	// fmt.Println(genIpaddr())
