@@ -200,6 +200,31 @@ func genContainerSize() string {
 	return size
 }
 
+type Hostinfo struct {
+	id     int
+	host   string
+	ipaddr string
+	arch   string
+	os     string
+}
+
+// type Containerinfo struct {
+// 	containerid string
+// 	imag        string
+// 	command     string
+// 	created     string
+// 	status      string
+// 	ports       uint16
+// 	names       string
+// }
+
+// type Imageinfo struct {
+// 	image   string
+// 	imageid string
+// 	created string
+// 	size    string
+// }
+
 func main() {
 	// fmt.Println(genMachineID())
 	// fmt.Println(genIpaddr())
